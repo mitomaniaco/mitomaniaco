@@ -13,6 +13,7 @@ from __future__ import annotations
 import json
 import os
 import sys
+import xml.etree.ElementTree as ET
 from datetime import date, datetime
 from pathlib import Path
 from urllib.parse import quote_plus
@@ -201,7 +202,7 @@ def render_theme(stats: dict, name: str, portrait: str) -> str:
 
     scale = MARK_SIZE / 1000
 
-    fig = " &nbsp; ".join(
+    fig = " \u00a0 ".join(
         f'<tspan fill="{t["muted"]}">{esc(v)}</tspan> {esc(k)}'
         for v, k in (("{}".format(human(stats["contributions"])), "contributions"),
                      (human(stats["prs"]), "pull requests"),
@@ -282,8 +283,14 @@ def main() -> int:
 
     portrait = (ASSETS / "portrait.txt").read_text(encoding="utf-8").rstrip("\n")
     for theme in ("dark", "light"):
-        (ASSETS / f"card-{theme}.svg").write_text(
-            render_theme(stats, theme, portrait), encoding="utf-8")
+        svg = render_theme(stats, theme, portrait)
+        # GitHub serves these through an XML-strict image proxy: fail here, not there.
+        try:
+            ET.fromstring(svg)
+        except ET.ParseError as exc:
+            print(f"card-{theme}.svg is not valid XML: {exc}", file=sys.stderr)
+            return 1
+        (ASSETS / f"card-{theme}.svg").write_text(svg, encoding="utf-8")
     (ASSETS / "stats.json").write_text(json.dumps(stats, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(stats, indent=2))
     return 0
