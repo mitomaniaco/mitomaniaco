@@ -6,11 +6,7 @@
   </picture>
 </p>
 
-I build software that removes friction — usually my own.
-Offline by default, no cloud tax, and the tool never acts for you: it hands you the decision.
-
-**Harvey** — prospecting that never sends the message for you. `node:sqlite`, local.
-**Cobblemon Companion** — a planner that reads your save. `electron`, `react`.
+I build software that removes friction — usually my own. Offline by default, no cloud tax, and the tool never acts for you: it hands you the decision.
 
 <details>
 <summary>Numbers &amp; how this card is built</summary>
@@ -19,7 +15,7 @@ Offline by default, no cloud tax, and the tool never acts for you: it hands you 
 and `assets/card-light.svg`. The wordmark is outlined path data — no web font, so
 nothing falls back or gets blocked. The portrait is ASCII locked to a fixed grid
 with `textLength`, so it keeps its shape on any monospace font. A GitHub Action
-refreshes the numbers once a day; the screenshot in `preview/` is only for local
-comparison and is not part of the profile.
+refreshes the numbers once a day; `preview/` holds local screenshots and is not
+part of the profile page.
 
 </details>
